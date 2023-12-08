@@ -1,0 +1,11 @@
+name: ${name}
+version: '${version}'
+main: top.mrxiaom.example.ExamplePlugin
+api-version: 1.19
+softdepend:
+  - PlaceholderAPI
+  - Vault
+authors: [ MrXiaoM ]
+commands:
+  example:
+    description: awa

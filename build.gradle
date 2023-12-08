@@ -1,0 +1,90 @@
+plugins {
+    id "java"
+    id "maven-publish"
+    id "com.github.johnrengelman.shadow" version "7.0.0"
+}
+
+group = "top.mrxiaom"
+version = "1.0.0"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://maven.fastmirror.net/repositories/minecraft" }
+    maven { url "https://mvn.lumine.io/repository/maven/" }
+    maven { url = "https://repo.codemc.io/repository/maven-public/" }
+    maven { name "Aikar"; url "https://repo.aikar.co/content/groups/aikar/" }
+    maven { url "https://repo.papermc.io/repository/maven-public/" }
+    maven {
+        name = "spigotmc-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven { url = "https://repo.viaversion.com/" }
+    maven { url = "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
+    maven { url = "https://jitpack.io" }
+    maven { url = "https://ci.nyaacat.com/maven/" }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+}
+
+dependencies {
+    compileOnly "org.purpurmc.purpur:purpur-api:1.19.4-R0.1-SNAPSHOT"
+    compileOnly "net.milkbowl.vault:VaultAPI:1.7"
+    compileOnly "me.clip:placeholderapi:2.11.5"
+    compileOnly fileTree("libs")
+    
+    implementation "com.zaxxer:HikariCP:4.0.3"
+    implementation "com.github.MrXiaoM:SQLHelper:1.4.3"
+    implementation "commons-io:commons-io:2.15.0"
+    implementation "commons-lang:commons-lang:2.6"
+    implementation "org.jetbrains:annotations:19.0.0"
+}
+shadowJar {
+    classifier("")
+    def targetGroup = "top.mrxiaom.sweetricebase.utils."
+    relocate("org.intellij.lang.annotations", targetGroup + "annotations.intellij")
+    relocate("org.jetbrains.annotations", targetGroup + "annotations.jetbrains")
+    relocate("top.mrxiaom.sqlhelper", targetGroup + "sql")
+    relocate("org.apache.commons", targetGroup + "commons")
+    relocate("com.zaxxer.hikari", targetGroup + "hikari")
+}
+tasks.build.dependsOn(shadowJar)
+
+def targetJavaVersion = 17
+java {
+
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release.set(targetJavaVersion)
+    }
+}
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from(sourceSets.main.resources.srcDirs) {
+        expand(
+            "name": rootProject.name,
+            "version": version,
+        )
+        include "plugin.yml"
+    }
+}
+publishing {
+    publications {
+        mavenRelease(MavenPublication) {
+            from components.java
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+        }
+    }
+}

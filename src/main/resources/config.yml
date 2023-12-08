@@ -1,0 +1,45 @@
+# 启用税收的世界，大小写敏感
+enable-worlds:
+  - world1
+  - world2
+
+# 领地收税费率
+tax-rate: 0.08
+# 多少天收一次税
+tax-time-days: 10
+# 欠费多少天后没收领地
+tax-time-days-deadline: 3
+
+# 没收领地时，领地转给某人的名字
+# 留空代表删除领地
+transfer-owner: ''
+# 没收领地后是否重置领地权限
+reset-flags: true
+# 没收领地后、重置领地后修改公共领地权限
+reset-flags-override:
+  tp: false
+  move: false
+
+# 扣费成功执行的命令（控制台权限执行）
+# %player% 玩家名
+# %res% 领地名
+# %money% 扣除的费用
+tax-success-commands:
+  - 'cmi mail send %player% 你的领地 %res% 税金已自动缴纳 %money%'
+
+# 删除/转让领地后执行的命令（控制台权限执行）
+# %player% 玩家名
+# %res% 领地名
+tax-transfer-commands:
+  - 'cmi mail send %player% 你的领地 %res% 因逾期未缴税被没收'
+
+messages:
+  join-deadline-header: '&b你有待缴纳的领地租税'
+  join-deadline: '  &f你的领地 &e%res% &f当前正欠税 &e%money%'
+  join-deadline-footer: '&b执行 &e/rt open &b以缴纳税务，逾期将没收领地'
+
+  lock-subzone: '&e父领地已欠税，无法创建子领地'
+  lock-flags: '&e领地已欠税，无法更改权限'
+  lock-give: '&e领地已欠税，无法转移领地所有权'
+
+  title: '领地税务管理'
