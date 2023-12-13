@@ -6,7 +6,7 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.jetbrains.annotations.Nullable;
 import top.mrxiaom.example.ExamplePlugin;
 import top.mrxiaom.example.db.IDatabase;
-import top.mrxiaom.example.gui.ExampleDatabase;
+import top.mrxiaom.example.db.ExampleDatabase;
 
 import java.sql.Connection;
 import java.util.ArrayList;

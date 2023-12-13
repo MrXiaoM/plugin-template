@@ -1,6 +1,5 @@
-package top.mrxiaom.example.gui;
+package top.mrxiaom.example.db;
 
-import top.mrxiaom.example.db.IDatabase;
 import top.mrxiaom.example.func.AbstractPluginHolder;
 import top.mrxiaom.example.func.DatabaseManager;
 import top.mrxiaom.sqlhelper.*;
