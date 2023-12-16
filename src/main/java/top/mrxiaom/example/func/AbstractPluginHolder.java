@@ -93,13 +93,13 @@ public abstract class AbstractPluginHolder {
         for (AbstractPluginHolder inst : registeredHolders.values()) {
             inst.reloadConfig(config);
         }
-        registeredHolders.clear();
     }
 
     public static void disableAllModule() {
         for (AbstractPluginHolder inst : registeredHolders.values()) {
             inst.onDisable();
         }
+        registeredHolders.clear();
     }
 
     public static boolean t(CommandSender sender, String... msg) {
